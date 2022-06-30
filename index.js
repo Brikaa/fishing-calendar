@@ -1,6 +1,5 @@
 (async () => {
-    const SPRING_DAYS_MIN = [12, 13, 14, 15, 16, 17, 18, 27, 28, 29, 30, 1, 2, 3, 4];
-    const NEAP_DAYS = [5, 6, 7, 8, 9, 10, 11, 19, 20, 21, 22, 23, 24, 25, 26];
+    const SPRING_DAYS = [12, 13, 14, 15, 16, 17, 18, 27, 28, 29, 30, 1, 2, 3, 4];
 
     const GREGORIAN_MONTHS = [
         'January',
@@ -61,13 +60,25 @@
             const table = document.createElement('table');
             let row;
             calendar[year][month].forEach((day_date, i) => {
-                if (i % 7 == 0 || i % 28 == 0) {
+                if (i % 7 === 0 || i % 28 === 0) {
                     row = document.createElement('tr');
                     table.appendChild(row);
                 }
                 const cell = document.createElement('td');
-                gregorian_day = parseInt(day_date.gregorian.split('-')[2]);
-                cell.innerText = gregorian_day;
+                const gregorian_day = parseInt(day_date.gregorian.split('-')[2]);
+                const [hijri_year, hijri_month, hijri_day] = day_date.hijri
+                    .split('-')
+                    .map((x) => parseInt(x));
+
+                if (SPRING_DAYS.includes(hijri_day)) {
+                    cell.style.color = 'red';
+                } else {
+                    cell.style.color = 'green';
+                }
+
+                const hijri_month_str =
+                    hijri_day === 1 || i === 0 ? ` ${HIJRI_MONTHS[hijri_month - 1]} - ${hijri_year}` : '';
+                cell.innerText = `${gregorian_day} (${hijri_day}${hijri_month_str})`;
                 row.appendChild(cell);
             });
             ELEMENTS.calendar_area.appendChild(table);
