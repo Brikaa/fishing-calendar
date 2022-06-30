@@ -71,9 +71,9 @@
                     .map((x) => parseInt(x));
 
                 if (SPRING_DAYS.includes(hijri_day)) {
-                    cell.style.color = 'red';
+                    cell.classList.add('spring');
                 } else {
-                    cell.style.color = 'green';
+                    cell.classList.add('neap');
                 }
 
                 const hijri_month_str =
