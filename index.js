@@ -77,8 +77,15 @@
                 }
 
                 const hijri_month_str =
-                    hijri_day === 1 || i === 0 ? ` ${HIJRI_MONTHS[hijri_month - 1]} - ${hijri_year}` : '';
-                cell.innerText = `${gregorian_day} (${hijri_day}${hijri_month_str})`;
+                    hijri_day === 1 || i === 0
+                        ? `${HIJRI_MONTHS[hijri_month - 1]}, ${hijri_year}`
+                        : '';
+
+                if (!month_element.innerText.includes(hijri_month_str)) {
+                    month_element.innerText += ` - ${hijri_month_str}`;
+                }
+
+                cell.innerText = `${gregorian_day} (${hijri_day})`;
                 row.appendChild(cell);
             });
             ELEMENTS.calendar_area.appendChild(table);
