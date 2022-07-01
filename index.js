@@ -57,12 +57,16 @@
         ELEMENTS.month_selector.appendChild(option);
     });
 
-    ELEMENTS.year_selector.addEventListener('change', (e) => {
+    const handle_year_change = (year) => {
         ELEMENTS.calendar_area.innerHTML = '';
-        const year = e.target.value;
+        if (year === 'none') {
+            return;
+        }
         const selected_month = ELEMENTS.month_selector.value;
         const all_months =
-            selected_month === 'all' ? calendar[year] : { [selected_month]: calendar[year][selected_month] };
+            selected_month === 'all'
+                ? calendar[year]
+                : { [selected_month]: calendar[year][selected_month] };
         for (const month in all_months) {
             const month_element = document.createElement('h3');
             month_element.innerText = GREGORIAN_MONTHS[parseInt(month) - 1];
@@ -101,5 +105,10 @@
             });
             ELEMENTS.calendar_area.appendChild(table);
         }
-    });
+    };
+
+    ELEMENTS.year_selector.addEventListener('change', (e) => handle_year_change(e.target.value));
+    ELEMENTS.month_selector.addEventListener('change', () =>
+        handle_year_change(ELEMENTS.year_selector.value)
+    );
 })();
