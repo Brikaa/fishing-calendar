@@ -34,7 +34,8 @@
     const ELEMENTS = {
         year_selector: document.getElementById('year-selector'),
         calendar_area: document.getElementById('calendar-area'),
-        loading_area: document.getElementById('loading-area')
+        loading_area: document.getElementById('loading-area'),
+        month_selector: document.getElementById('month-selector')
     };
 
     ELEMENTS.loading_area.removeAttribute('hidden');
@@ -49,10 +50,20 @@
         ELEMENTS.year_selector.appendChild(option);
     }
 
+    GREGORIAN_MONTHS.forEach((month, i) => {
+        const option = document.createElement('option');
+        option.setAttribute('value', i + 1);
+        option.innerText = month;
+        ELEMENTS.month_selector.appendChild(option);
+    });
+
     ELEMENTS.year_selector.addEventListener('change', (e) => {
         ELEMENTS.calendar_area.innerHTML = '';
         const year = e.target.value;
-        for (const month in calendar[year]) {
+        const selected_month = ELEMENTS.month_selector.value;
+        const all_months =
+            selected_month === 'all' ? calendar[year] : { [selected_month]: calendar[year][selected_month] };
+        for (const month in all_months) {
             const month_element = document.createElement('h3');
             month_element.innerText = GREGORIAN_MONTHS[parseInt(month) - 1];
             ELEMENTS.calendar_area.appendChild(month_element);
