@@ -7,10 +7,7 @@ td {
     border: 1px solid black;
 }
 
-.spring {
-    color: red;
-}
-
 .neap {
-    color: green;
+    background: green;
+    color: white;
 }
